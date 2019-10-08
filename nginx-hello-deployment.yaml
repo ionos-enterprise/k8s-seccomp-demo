@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-hello-deployment
+  labels:
+    app: nginx-hello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-hello
+  template:
+    metadata:
+      labels:
+        app: nginx-hello
+      annotations:
+        kubernetes.io/psp: privileged
+        seccomp.security.alpha.kubernetes.io/pod: localhost/limited-seccomp-profile.yaml
+    spec:
+      containers:
+      - name: nginx-hello
+        image: nginxdemos/hello:latest
+        ports:
+        - containerPort: 80
+
